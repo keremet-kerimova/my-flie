@@ -1,36 +1,41 @@
 import { useState } from "react";
-import Coundown from "./Components/Coundown/Coundown"
+import Countdown from "./Components/Coundown/Coundown";
+import Game from "./Components/Game/Game"
+
+
 
 const App = () => {
-   const [ coundown, setCoundown] = useState(20);
-   const [ a, setA] = useState(Math.round(Math.random() * 50));
-   const [ b, setB] = useState(Math.round(Math.random()* 50));
-   const [ c, setC] = useState("?");
-
-  function reset(){
-    setA(Math.round(Math.random() * 50));
-    setB(Math.round(Math.random() * 50));
-    setC("?");
+  const [a, setA] = useState(randomNumber(50));
+  const [b, setB] = useState(randomNumber(50));
+  const [c, setC] = useState(randomNumber(50));
+  const [answer, setAnswer] = useState("?");
+  const [countdown, setCountdown] = useState(20);
+  function randomNumber(limit) {
+    return Math.round(Math.random() * limit);
   }
   function checkAnswer() {
-    if ( a + b == c){
-      reset();
+    const d = a + b - c;
+    if (d == answer) {
+      setA(randomNumber(50));
+      setB(randomNumber(50));
+      setC(randomNumber(50));
+      setAnswer("?");
+      setCountdown(20);
     }
-    else{
+    else {
       alert("No");
     }
   }
-  
   return (
     <div className="App">
-      {a} + {b} = {c}
-      <Coundown coundown={coundown}
-      setCoundown={setCoundown} />
-      <input type="text"
-      onChange={({ target })=> setC(target.value)}
+      {a} + {b} - { c} = {answer} 
+      <Countdown countdown={countdown} setCountdown={setCountdown} />
+      <input type="number" value={answer} onChange={({ target }) => setAnswer(target.value)} />
       <button onClick={() => checkAnswer()}>Ok</button>
-      </div>
+    </div>
   );
 }
+
+
 
 export default App;
